@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS shops (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid() PRIMARY KEY,
     user_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,

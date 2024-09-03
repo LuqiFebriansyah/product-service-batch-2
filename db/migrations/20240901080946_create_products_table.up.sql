@@ -1,12 +1,17 @@
 CREATE TABLE IF NOT EXISTS products (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    shop_id UUID NOT NULL REFERENCES shops(id),
-    name VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    category_id UUID NOT NULL REFERENCES categories(id),
-    price DECIMAL(19, 2) NOT NULL,
-    stock INT NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-    deleted_at TIMESTAMP WITH TIME ZONE
+    name VARCHAR(100) NOT NULL,
+    brand VARCHAR(100) NOT NULL,
+    price DECIMAL(12, 4) NOT NULL DEFAULT 0.0,
+    category_id UUID NOT NULL,
+    stock INT NOT NULL DEFAULT 0,
+    description TEXT,
+    image_url TEXT,
+    shop_id UUID NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP,
+
+    FOREIGN KEY (category_id) REFERENCES category(id),
+    FOREIGN KEY (shop_id) REFERENCES shops(id)
 );
