@@ -2,55 +2,55 @@ package entity
 
 import "codebase-app/pkg/types"
 
-type ProductsResponse struct {
-	Items []ProductItem `json:"items"`
-	Meta  types.Meta    `json:"meta"`
-}
-
-type ProductItem struct {
-	Id          string  `json:"id" db:"id"`
-	Name        string  `json:"name" db:"name"`
-	Description string  `json:"description" db:"description"`
-	Price       float64 `json:"price" db:"price"`
-	Stock       int     `json:"stock" db:"stock"`
-	CategoryId  *string `json:"category_id" db:"category_id"`
-}
-
-type GetProductResponse struct {
-	Name        string              `json:"name" db:"name"`
-	Description string              `json:"description" db:"description"`
-	Price       float64             `json:"price" db:"price"`
-	Stock       int                 `json:"stock" db:"stock"`
-	CategoryId  *string             `json:"category_id,omitempty" db:"category_id"`
-	Category    GetCategoryResponse `json:"category" db:"category"`
-}
-
-type GetCategoryResponse struct {
-	Name        string `json:"name" db:"name"`
-	Description string `json:"description" db:"description"`
-}
-
 type CreateProductRequest struct {
-	ShopId string `json:"shop_id" validate:"uuid" db:"shop_id"`
+	UserId string `validate:"uuid" db:"user_id"`
 
-	Name        string  `json:"name" validate:"required" db:"name"`
-	Description string  `json:"description" validate:"required,max=255" db:"description"`
+	Name        string  `json:"name" validate:"required,min=3,max=100" db:"name"`
+	Brand	   	string  `json:"brand" validate:"required,min=3" db:"brand"`
 	Price       float64 `json:"price" validate:"required" db:"price"`
-	Stock       int     `json:"stock" validate:"required" db:"stock"`
-	CategoryId  string  `json:"category_id" db:"category_id"`
+	Stock       int     `json:"stock" validate:"required,min=1" db:"stock"`
+	CategoryId  string  `json:"category_id" validate:"required,uuid" db:"category_id"`
+	ShopId      string  `json:"shop_id" validate:"required,uuid" db:"shop_id"`
+	Description string  `json:"description" db:"description"`
+	ImageUrl    string  `json:"image_url" db:"image_url"`
 }
 
 type CreateProductResponse struct {
 	Id string `json:"id" db:"id"`
 }
 
+type GetProductDetailRequest struct {
+	Id string `validate:"uuid" db:"id"`
+}
+
+type GetProductDetailResponse struct {
+	Id          string  `json:"id" db:"id"`
+	Name        string  `json:"name" db:"name"`
+	Price       float64 `json:"price" db:"price"`
+	Stock       int     `json:"stock" db:"stock"`
+	Category  CategoryItem  `json:"category"`
+	Description *string  `json:"description" db:"description"`
+	ImageUrl    *string  `json:"image_url" db:"image_url"`
+	Shop ShopItem `json:"shop"`
+}
+
+type ShopItem struct{
+	Id string `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Description string `json:"description" db:"description"`
+}	
 type UpdateProductRequest struct {
+	UserId string `prop:"user_id" validate:"uuid" db:"user_id"`
+
 	Id          string  `params:"id" validate:"uuid" db:"id"`
-	Name        string  `json:"name" validate:"required" db:"name"`
-	Description string  `json:"description" validate:"required" db:"description"`
+	Name        string  `json:"name" validate:"required,min=3,max=100" db:"name"`
+	Brand	   	string  `json:"brand" validate:"required,min=3" db:"brand"`
 	Price       float64 `json:"price" validate:"required" db:"price"`
-	Stock       int     `json:"stock" validate:"required" db:"stock"`
-	CategoryId  string  `json:"category_id" db:"category_id"`
+	Stock       int     `json:"stock" validate:"required,min=1" db:"stock"`
+	CategoryId  string  `json:"category_id" validate:"required,uuid" db:"category_id"`
+	ShopId      string  `json:"shop_id" validate:"required,uuid" db:"shop_id"`
+	Description string  `json:"description" db:"description"`
+	ImageUrl    string  `json:"image_url" db:"image_url"`
 }
 
 type UpdateProductResponse struct {
@@ -58,19 +58,28 @@ type UpdateProductResponse struct {
 }
 
 type DeleteProductRequest struct {
-	Id string `validate:"uuid" db:"id"`
+	UserId string `prop:"user_id" validate:"uuid" db:"user_id"`
+
+	Id string `validate:"uuid,required" db:"id"`
 }
 
-type GetProductRequest struct {
-	Id string `validate:"uuid" db:"id"`
+type DeleteProductResponse struct {
+	Id string `json:"id" db:"id"`
 }
 
-type ProductsRequest struct {
-	Page     int `query:"page" validate:"required"`
-	Paginate int `query:"paginate" validate:"required"`
+type GetProductsRequest struct {
+	UserId   string `prop:"user_id" validate:"uuid"`
+	ProductName string `query:"name"`
+	Brand string `query:"brand"`
+	CategoryId string `query:"category"`
+	MinPrice float64 `query:"min_price"`
+	MaxPrice float64 `query:"max_price"`
+
+	Page     int    `query:"page" validate:"required"`
+	Paginate int    `query:"paginate" validate:"required"`
 }
 
-func (r *ProductsRequest) SetDefault() {
+func (r *GetProductsRequest) SetDefault() {
 	if r.Page < 1 {
 		r.Page = 1
 	}
@@ -78,4 +87,26 @@ func (r *ProductsRequest) SetDefault() {
 	if r.Paginate < 1 {
 		r.Paginate = 10
 	}
+}
+
+type ProductItem struct {
+	Id          string  `params:"id" validate:"uuid" db:"id"`
+	Name        string  `json:"name" validate:"required,min=3,max=100" db:"name"`
+	Brand	   	string  `json:"brand" db:"brand"`
+	Price       float64 `json:"price" validate:"required" db:"price"`
+	Stock       int     `json:"stock" validate:"required,min=1" db:"stock"`
+	CategoryId  string  `json:"category_id" validate:"required,uuid" db:"category_id"`
+	ShopId      string  `json:"shop_id" validate:"required,uuid" db:"shop_id"`
+	Description string  `json:"description" db:"description"`
+	ImageUrl    string  `json:"image_url" db:"image_url"`
+}
+
+type GetProductsResponse struct {
+	Items []ProductItem `json:"items"`
+	Meta  types.Meta    `json:"meta"`
+}
+
+type CategoryItem struct{
+	Id string `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
 }

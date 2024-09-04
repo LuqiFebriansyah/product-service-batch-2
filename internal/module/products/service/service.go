@@ -18,22 +18,23 @@ func NewProductService(repo ports.ProductRepository) *productService {
 	}
 }
 
-func (s *productService) GetProducts(ctx context.Context, req *entity.ProductsRequest) (*entity.ProductsResponse, error) {
-	return s.repo.GetProducts(ctx, req)
-}
-
-func (s *productService) GetProduct(ctx context.Context, req *entity.GetProductRequest) (*entity.GetProductResponse, error) {
-	return s.repo.GetProduct(ctx, req)
-}
 
 func (s *productService) CreateProduct(ctx context.Context, req *entity.CreateProductRequest) (*entity.CreateProductResponse, error) {
 	return s.repo.CreateProduct(ctx, req)
+}
+
+func (s *productService) GetDetailProduct(ctx context.Context, req *entity.GetProductDetailRequest) (*entity.GetProductDetailResponse, error) {
+	return s.repo.GetDetailProduct(ctx, req)
 }
 
 func (s *productService) UpdateProduct(ctx context.Context, req *entity.UpdateProductRequest) (*entity.UpdateProductResponse, error) {
 	return s.repo.UpdateProduct(ctx, req)
 }
 
-func (s *productService) DeleteProduct(ctx context.Context, req *entity.DeleteProductRequest) error {
+func (s *productService) DeleteProduct(ctx context.Context, req *entity.DeleteProductRequest) (*entity.DeleteProductResponse, error) {
 	return s.repo.DeleteProduct(ctx, req)
+}
+
+func (s *productService) GetProducts(ctx context.Context, req *entity.GetProductsRequest) (*entity.GetProductsResponse, error) {
+	return s.repo.GetProducts(ctx, req)
 }

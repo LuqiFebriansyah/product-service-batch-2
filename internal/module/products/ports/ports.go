@@ -6,17 +6,17 @@ import (
 )
 
 type ProductRepository interface {
-	GetProduct(ctx context.Context, req *entity.GetProductRequest) (*entity.GetProductResponse, error)
-	GetProducts(ctx context.Context, req *entity.ProductsRequest) (*entity.ProductsResponse, error)
-	CreateProduct(ctx context.Context, req *entity.CreateProductRequest) (*entity.CreateProductResponse, error)
-	UpdateProduct(ctx context.Context, req *entity.UpdateProductRequest) (*entity.UpdateProductResponse, error)
-	DeleteProduct(ctx context.Context, req *entity.DeleteProductRequest) error
+	CreateProduct(ctx context.Context, shop *entity.CreateProductRequest) (*entity.CreateProductResponse, error)
+	GetDetailProduct(ctx context.Context, shop *entity.GetProductDetailRequest) (*entity.GetProductDetailResponse, error)
+	UpdateProduct(ctx context.Context, shop *entity.UpdateProductRequest) (*entity.UpdateProductResponse, error)
+	DeleteProduct(ctx context.Context, shop *entity.DeleteProductRequest) (*entity.DeleteProductResponse, error)
+	GetProducts(ctx context.Context, shop *entity.GetProductsRequest) (*entity.GetProductsResponse, error)
 }
 
 type ProductService interface {
-	GetProduct(ctx context.Context, req *entity.GetProductRequest) (*entity.GetProductResponse, error)
-	GetProducts(ctx context.Context, req *entity.ProductsRequest) (*entity.ProductsResponse, error)
-	CreateProduct(ctx context.Context, req *entity.CreateProductRequest) (*entity.CreateProductResponse, error)
-	UpdateProduct(ctx context.Context, req *entity.UpdateProductRequest) (*entity.UpdateProductResponse, error)
-	DeleteProduct(ctx context.Context, req *entity.DeleteProductRequest) error
+	CreateProduct(ctx context.Context, shop *entity.CreateProductRequest) (*entity.CreateProductResponse, error)
+	GetDetailProduct(ctx context.Context, shop *entity.GetProductDetailRequest) (*entity.GetProductDetailResponse, error)
+	UpdateProduct(ctx context.Context, shop *entity.UpdateProductRequest) (*entity.UpdateProductResponse, error)
+	DeleteProduct(ctx context.Context, shop *entity.DeleteProductRequest) (*entity.DeleteProductResponse, error)
+	GetProducts(ctx context.Context, shop *entity.GetProductsRequest) (*entity.GetProductsResponse, error)
 }
